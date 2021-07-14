@@ -1,0 +1,23 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: pm10-predicate-filter-action-binding
+spec:
+  source:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1alpha1
+      name: kafka-not-secured-source
+    properties:
+      brokers: "messaging-kafka-broker-kafka-bootstrap.messaging-kafka-broker:9092"
+      topic: "smart-nano.alerts"
+  steps:
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1alpha1
+      name: predicate-filter-action
+    properties:
+      expression: "@.parameter =~ /.*pm10/"
+  sink:
+    uri: "log:info"
+

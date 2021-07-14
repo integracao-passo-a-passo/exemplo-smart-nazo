@@ -1,0 +1,28 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: no2-predicate-filter-action-binding
+spec:
+  source:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1alpha1
+      name: kafka-not-secured-source
+    properties:
+      brokers: "messaging-kafka-broker-kafka-bootstrap.messaging-kafka-broker:9092"
+      topic: "smart-nano.alerts"
+  steps:
+  - ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1alpha1
+      name: predicate-filter-action
+    properties:
+      expression: "@.parameter =~ /.*no2/"
+  sink:
+    ref:
+      kind: Kamelet
+      apiVersion: camel.apache.org/v1alpha1
+      name: http-sink
+    properties:
+      url: "https://webhook.site/3c3e89f2-1c56-4bb8-96c1-4f971a42fcd8"
+
