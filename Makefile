@@ -46,6 +46,9 @@ setup-simple:
 	echo "Use: https://camel.apache.org/camel-k/latest/installation/installation.html"
 
 run:
+	k create -f kamelets/source/no2-preciate-filter-binding.yaml
+	k create -f kamelets/source/pm10-predicate-filter-binding.yaml
+	k create -f kamelets/source/catch-all-kafka-source-binding.yaml
 	kamel run --dev --build-property quarkus.arc.unremovable-types=com.fasterxml.jackson.databind.ObjectMapper --configmap smart-nazo-config SmartNazoBot.java
 
 clean:
